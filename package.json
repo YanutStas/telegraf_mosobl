@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "name": "back",
+=======
+  "name": "telegraf_mosobl",
+>>>>>>> da6660b (Минимально обновил)
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
