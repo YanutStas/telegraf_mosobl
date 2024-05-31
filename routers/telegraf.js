@@ -20,10 +20,19 @@ function formatMessage(entry) {
   };
   const formattedDate = date.toLocaleString("ru-RU", options);
 
-  return `<b>Городской округ:</b> ${entry.go}
-<b>Улицы:</b> ${entry.addressDisconnected}
-<b>Дата:</b> ${formattedDate}
-<b>Продолжительность:</b> ${entry.durationSolution} ч`;
+  const fields = [
+    { label: "Городской округ", value: entry.go },
+    { label: "Улицы", value: entry.addressDisconnected },
+    { label: "Дата", value: formattedDate },
+    { label: "Продолжительность", value: `${entry.durationSolution} ч` },
+  ];
+
+  const message = fields
+    .filter(field => field.value !== null)
+    .map(field => `<b>${field.label}:</b> ${field.value}`)
+    .join("\n");
+
+  return message;
 }
 
 router.post("/", async (req, res) => {
@@ -95,10 +104,12 @@ router.post("/", async (req, res) => {
 
 module.exports = router;
 
+
 // const express = require("express");
 // const { Telegram } = require("telegraf");
 // const axios = require("axios");
 // const router = express.Router();
+// require("dotenv").config();
 
 // const telegram = new Telegram(process.env.TELEGRAM_TOKEN);
 // const chatId = process.env.CHAT_ID;
@@ -175,9 +186,7 @@ module.exports = router;
 //           messageId
 //         );
 //         if (telegramResponse === true) {
-//           await axios.delete(
-//             `${telegramApiUrl}/${response.data.data[0].id}`
-//           );
+//           await axios.delete(`${telegramApiUrl}/${response.data.data[0].id}`);
 //           console.log("Message deleted from Telegram and database:", messageId);
 //         } else {
 //           console.log("Failed to delete message in Telegram");
